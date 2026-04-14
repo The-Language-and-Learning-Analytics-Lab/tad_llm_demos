@@ -586,3 +586,51 @@ textarea:focus {
   }
   .slider-value { color: rgba(232,230,223,0.55); }
 }
+
+/* ── Token chips ── */
+
+.token-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+
+.token-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 6px;
+  min-width: 32px;
+}
+
+.token-chip-text {
+  font-size: 0.82rem;
+  font-weight: 500;
+  font-family: monospace;
+  white-space: pre;
+}
+
+.token-chip-id {
+  font-size: 0.65rem;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+  margin-top: 1px;
+}
+
+.tok-c0 { background: #dbeafe; color: #1e40af; }
+.tok-c1 { background: #dcfce7; color: #15803d; }
+.tok-c2 { background: #fef9c3; color: #92400e; }
+.tok-c3 { background: #fce7f3; color: #9d174d; }
+.tok-c4 { background: #ede9fe; color: #5b21b6; }
+.tok-c5 { background: #ffedd5; color: #9a3412; }
+
+@media (prefers-color-scheme: dark) {
+  .tok-c0 { background: #1e3a5f; color: #93c5fd; }
+  .tok-c1 { background: #14532d; color: #86efac; }
+  .tok-c2 { background: #451a03; color: #fde68a; }
+  .tok-c3 { background: #500724; color: #fbcfe8; }
+  .tok-c4 { background: #2e1065; color: #c4b5fd; }
+  .tok-c5 { background: #431407; color: #fed7aa; }
+}
