@@ -409,6 +409,74 @@ textarea:focus {
   margin: 1rem 0;
 }
 
+/* ── Sampling controls ── */
+
+.sampling-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sampling-slider {
+  flex: 1;
+  accent-color: #378ADD;
+  cursor: pointer;
+}
+
+.slider-value {
+  font-size: 0.84rem;
+  color: #5a5a56;
+  min-width: 36px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Generated continuation ── */
+
+.generated-continuation {
+  padding: 6px 0.75rem;
+  background: #fafaf8;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  font-size: 0.92rem;
+  font-family: inherit;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.generated-label {
+  font-size: 0.75rem;
+  color: #888780;
+  font-weight: 500;
+  margin-right: 6px;
+}
+
+.generated-text {
+  color: #1D9E75;
+  font-weight: 500;
+}
+
+/* ── Sampled token display ── */
+
+.sampled-token-display {
+  margin: 0.75rem 0 0;
+  font-size: 0.88rem;
+  color: #5a5a56;
+}
+
+.sampled-token-value {
+  color: #D85A30;
+  font-size: 1rem;
+}
+
 /* ── Token histogram ── */
 
 .topk-row {
@@ -497,10 +565,24 @@ textarea:focus {
   transform-origin: top left;
 }
 
+.hist-col--sampled .hist-bar {
+  box-shadow: 0 0 0 2px #D85A30;
+}
+
+.hist-label--sampled {
+  color: #D85A30 !important;
+  font-weight: 600;
+}
+
 @media (prefers-color-scheme: dark) {
   .topk-input {
     background: #1c1c1a;
     border-color: rgba(255,255,255,0.15);
   }
   .hist-label { color: rgba(232,230,223,0.6); }
+  .generated-continuation {
+    background: #1c1c1a;
+    border-color: rgba(255,255,255,0.15);
+  }
+  .slider-value { color: rgba(232,230,223,0.55); }
 }
