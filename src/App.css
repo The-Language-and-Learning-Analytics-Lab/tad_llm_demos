@@ -677,6 +677,323 @@ textarea:focus {
   }
 }
 
+/* ── Analogy demo ── */
+
+.analogy-header-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.analogy-backend-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+
+.analogy-backend-badge--webgpu {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.analogy-backend-badge--wasm {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.analogy-preset-select {
+  width: 100%;
+  padding: 7px 10px;
+  font-size: 0.92rem;
+  font-family: inherit;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-radius: 8px;
+  background: #fafaf8;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ── Equation grid ── */
+
+.analogy-eq-grid {
+  display: grid;
+  /* 7 columns: A, −, B, +, C, =, ? */
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 4px;
+  margin-bottom: 0;
+}
+
+/* Large bold letters in row 1 */
+.analogy-eq-letter {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--c-teal-mid);
+  text-align: center;
+  line-height: 1;
+  padding-bottom: 4px;
+}
+
+.analogy-eq-letter--result {
+  color: #378ADD;
+}
+
+/* Operators in row 1 (above inputs) — shown dimly as equation */
+.analogy-eq-op-label {
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: rgba(0,0,0,0.2);
+  text-align: center;
+  line-height: 1;
+  padding-bottom: 4px;
+  user-select: none;
+}
+
+/* Operators in row 2 (between inputs) — prominent */
+.analogy-eq-op {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: #5a5a56;
+  text-align: center;
+  align-self: center;
+  user-select: none;
+}
+
+.analogy-text-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.92rem;
+  font-family: inherit;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-radius: 8px;
+  background: #fafaf8;
+  transition: border-color 0.15s;
+  text-align: center;
+}
+
+.analogy-text-input:focus {
+  outline: none;
+  border-color: #378ADD;
+}
+
+.analogy-text-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Result box — same height as the inputs, shows top match */
+.analogy-eq-result-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.35rem;
+  padding: 0.5rem 0.5rem;
+  border-radius: 8px;
+  border: 0.5px dashed rgba(55,138,221,0.4);
+  background: rgba(55,138,221,0.04);
+  text-align: center;
+}
+
+.analogy-eq-result-word {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #378ADD;
+}
+
+.analogy-eq-result-dash {
+  font-size: 1rem;
+  color: rgba(0,0,0,0.2);
+}
+
+@media (max-width: 560px) {
+  .analogy-eq-grid {
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    /* Hide = and ? columns on very small screens */
+  }
+  .analogy-eq-grid > :nth-child(6),
+  .analogy-eq-grid > :nth-child(7),
+  .analogy-eq-grid > :nth-child(13),
+  .analogy-eq-grid > :nth-child(14) {
+    display: none;
+  }
+}
+
+/* Results list */
+
+.analogy-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 0.5rem;
+}
+
+.analogy-result-row {
+  display: grid;
+  grid-template-columns: 24px 140px 1fr 56px 20px;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #fafaf8;
+  border: 0.5px solid rgba(0,0,0,0.08);
+}
+
+.analogy-result-row--match {
+  background: #f0fdf4;
+  border-color: rgba(29,158,117,0.3);
+}
+
+.analogy-rank {
+  font-size: 0.78rem;
+  color: #888780;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.analogy-word {
+  font-size: 0.95rem;
+  font-weight: 500;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.analogy-score-track {
+  height: 6px;
+  background: #eeede8;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.analogy-score-fill {
+  height: 100%;
+  background: #378ADD;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.analogy-result-row--match .analogy-score-fill {
+  background: #1D9E75;
+}
+
+.analogy-score {
+  font-size: 0.78rem;
+  color: #5a5a56;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.analogy-check {
+  color: #1D9E75;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.analogy-miss-note {
+  font-size: 0.85rem;
+  color: #BA7517;
+  background: #fefce8;
+  border: 0.5px solid rgba(186,117,23,0.25);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 0.75rem;
+}
+
+/* About section */
+
+.analogy-about {
+  cursor: default;
+}
+
+.analogy-about-summary {
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: #5a5a56;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  padding: 0.1rem 0;
+}
+
+.analogy-about-summary::before {
+  content: "▸ ";
+  font-size: 0.7rem;
+}
+
+details[open] .analogy-about-summary::before {
+  content: "▾ ";
+}
+
+.analogy-about .explainer {
+  margin-top: 0.75rem;
+}
+
+/* Dark mode overrides */
+
+@media (prefers-color-scheme: dark) {
+  .analogy-backend-badge--webgpu {
+    background: #1e3a5f;
+    color: #93c5fd;
+  }
+  .analogy-backend-badge--wasm {
+    background: #2a2a28;
+    color: rgba(232,230,223,0.7);
+  }
+  .analogy-preset-select,
+  .analogy-text-input {
+    background: #1c1c1a !important;
+    color: #e8e6df !important;
+    border-color: rgba(255,255,255,0.15) !important;
+  }
+  .analogy-eq-op-label {
+    color: rgba(255,255,255,0.15);
+  }
+  .analogy-eq-op {
+    color: rgba(232,230,223,0.55);
+  }
+  .analogy-eq-result-box {
+    border-color: rgba(55,138,221,0.3);
+    background: rgba(55,138,221,0.06);
+  }
+  .analogy-eq-result-dash {
+    color: rgba(255,255,255,0.2);
+  }
+  .analogy-result-row {
+    background: #1e1e1c;
+    border-color: rgba(255,255,255,0.08);
+  }
+  .analogy-result-row--match {
+    background: #0f2318;
+    border-color: rgba(29,158,117,0.25);
+  }
+  .analogy-score-track {
+    background: rgba(255,255,255,0.1);
+  }
+  .analogy-miss-note {
+    background: #2a2005;
+    border-color: rgba(186,117,23,0.3);
+    color: #e8b84a;
+  }
+  .analogy-is-to,
+  .analogy-as,
+  .analogy-pool-note {
+    color: rgba(232,230,223,0.45);
+  }
+  .analogy-about-summary {
+    color: rgba(232,230,223,0.55);
+  }
+}
+
 /* ── Token chips ── */
 
 .token-chips {
