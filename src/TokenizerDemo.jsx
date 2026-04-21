@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import InlineWorker from "./tokenizerWorker.js?worker&inline";
+import Worker from "./tokenizerWorker.js?worker";
 
 const DEFAULT_TEXT =
   "Hello, world! The quick brown fox jumps over the lazy dog. Tokenization splits text into subwords.";
@@ -25,7 +25,7 @@ export default function TokenizerDemo() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    worker.current ??= new InlineWorker();
+    worker.current ??= new Worker();
 
     const onMessage = (e) => {
       switch (e.data.status) {

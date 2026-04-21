@@ -574,6 +574,81 @@ textarea:focus {
   font-weight: 600;
 }
 
+/* ── Logit chart (shorter than prob histogram) ── */
+
+.logit-bars-area {
+  height: 100px !important;
+}
+
+/* ── Nucleus lasso ── */
+
+.nucleus-lasso {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(55, 138, 221, 0.1);
+  border: 1.5px solid rgba(55, 138, 221, 0.4);
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 0;
+  transition: width 0.25s ease;
+}
+
+.nucleus-lasso-label {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: rgba(55, 138, 221, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* Bars sit above the lasso */
+.hist-col {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Button row ── */
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.secondary-btn {
+  font-size: 0.88rem;
+  padding: 9px 16px;
+  border-radius: 8px;
+  border: 0.5px solid rgba(0, 0, 0, 0.15);
+  background: transparent;
+  color: #5a5a56;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.secondary-btn:hover {
+  border-color: #378ADD;
+  color: #1a1a18;
+}
+
+/* ── Faded (non-nucleus) histogram bars ── */
+
+.hist-col--faded .hist-bar {
+  opacity: 0.55;
+}
+
+.hist-label--faded {
+  opacity: 0.4;
+}
+
 @media (prefers-color-scheme: dark) {
   .topk-input {
     background: #1c1c1a;
@@ -585,6 +660,21 @@ textarea:focus {
     border-color: rgba(255,255,255,0.15);
   }
   .slider-value { color: rgba(232,230,223,0.55); }
+  .nucleus-lasso {
+    background: rgba(55, 138, 221, 0.12);
+    border-color: rgba(55, 138, 221, 0.35);
+  }
+  .nucleus-lasso-label {
+    color: rgba(91, 168, 232, 0.8);
+  }
+  .secondary-btn {
+    border-color: rgba(255, 255, 255, 0.15);
+    color: rgba(232, 230, 223, 0.55);
+  }
+  .secondary-btn:hover {
+    border-color: #378ADD;
+    color: #e8e6df;
+  }
 }
 
 /* ── Token chips ── */

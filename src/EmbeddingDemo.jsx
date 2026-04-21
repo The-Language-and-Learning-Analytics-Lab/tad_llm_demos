@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import InlineWorker from "./worker.js?worker&inline";
+import Worker from "./worker.js?worker";
 
 const PRESET_PAIRS = [
   {
@@ -119,7 +119,7 @@ export default function EmbeddingDemo() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    worker.current ??= new InlineWorker();
+    worker.current ??= new Worker();
 
     const onMessage = (e) => {
       switch (e.data.status) {

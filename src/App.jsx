@@ -1,8 +1,9 @@
-import { useState } from "react";
-import EmbeddingDemo from "./EmbeddingDemo.jsx";
-import TokenSamplingDemo from "./TokenSamplingDemo.jsx";
-import TokenizerDemo from "./TokenizerDemo.jsx";
+import { useState, lazy, Suspense } from "react";
 import "./App.css";
+
+const EmbeddingDemo = lazy(() => import("./EmbeddingDemo.jsx"));
+const TokenSamplingDemo = lazy(() => import("./TokenSamplingDemo.jsx"));
+const TokenizerDemo = lazy(() => import("./TokenizerDemo.jsx"));
 
 const TABS = [
   { id: "tokenizer", label: "Tokenizer" },
@@ -25,9 +26,11 @@ export default function App() {
           </button>
         ))}
       </nav>
-      {activeTab === "embeddings" && <EmbeddingDemo />}
-      {activeTab === "token-sampling" && <TokenSamplingDemo />}
-      {activeTab === "tokenizer" && <TokenizerDemo />}
+      <Suspense fallback={<div>Loading…</div>}>
+        {activeTab === "embeddings" && <EmbeddingDemo />}
+        {activeTab === "token-sampling" && <TokenSamplingDemo />}
+        {activeTab === "tokenizer" && <TokenizerDemo />}
+      </Suspense>
     </div>
   );
 }
