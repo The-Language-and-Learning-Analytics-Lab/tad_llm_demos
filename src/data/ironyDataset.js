@@ -1,0 +1,173 @@
+// PLACEHOLDER — replace by running: python scripts/prepare_irony_data.py
+// Source: cardiffnlp/tweet_eval (irony config, test split)
+// RoBERTa model: cardiffnlp/twitter-roberta-base-irony
+// Seed: 42  |  12 non-irony + 8 irony = 20 total
+//
+// This placeholder uses realistic-looking constructed tweets so the UI can be
+// built and tested without running the Python script. Run the script to replace
+// this with real TweetEval test examples.
+
+export const IRONY_DATASET = [
+  {
+    id: 0,
+    text: `just had the most incredible hike — 4 hours up but the summit view made every single step worth it`,
+    ground_truth: "non_irony",
+    roberta_label: "non_irony",
+    roberta_confidence: 0.9312,
+    roberta_probs: { non_irony: 0.9312, irony: 0.0688 },
+  },
+  {
+    id: 1,
+    text: `oh perfect my alarm didn't go off on the one morning i have a job interview. really appreciate that.`,
+    ground_truth: "irony",
+    roberta_label: "irony",
+    roberta_confidence: 0.9034,
+    roberta_probs: { non_irony: 0.0966, irony: 0.9034 },
+  },
+  {
+    id: 2,
+    text: `got the job offer today! so grateful for everyone who supported me through the process. starting in three weeks`,
+    ground_truth: "non_irony",
+    roberta_label: "non_irony",
+    roberta_confidence: 0.9456,
+    roberta_probs: { non_irony: 0.9456, irony: 0.0544 },
+  },
+  {
+    id: 3,
+    text: `nothing like spilling an entire pot of coffee on your laptop right before a big client meeting. best morning ever.`,
+    ground_truth: "irony",
+    roberta_label: "irony",
+    roberta_confidence: 0.9187,
+    roberta_probs: { non_irony: 0.0813, irony: 0.9187 },
+  },
+  {
+    id: 4,
+    text: `my daughter took her first steps today. one of those moments you never forget.`,
+    ground_truth: "non_irony",
+    roberta_label: "non_irony",
+    roberta_confidence: 0.9523,
+    roberta_probs: { non_irony: 0.9523, irony: 0.0477 },
+  },
+  {
+    id: 5,
+    text: `great so the one night i actually go to bed early my neighbors decide to throw a party until 3am. love it.`,
+    ground_truth: "irony",
+    roberta_label: "irony",
+    roberta_confidence: 0.8734,
+    roberta_probs: { non_irony: 0.1266, irony: 0.8734 },
+  },
+  {
+    id: 6,
+    text: `finished my first marathon today! 26.2 miles and i am so proud of every single one`,
+    ground_truth: "non_irony",
+    roberta_label: "non_irony",
+    roberta_confidence: 0.9234,
+    roberta_probs: { non_irony: 0.9234, irony: 0.0766 },
+  },
+  {
+    id: 7,
+    text: `fantastic my flight got rerouted through two extra cities. should only get home 11 hours late. what a treat.`,
+    ground_truth: "irony",
+    roberta_label: "irony",
+    roberta_confidence: 0.9012,
+    roberta_probs: { non_irony: 0.0988, irony: 0.9012 },
+  },
+  {
+    id: 8,
+    text: `the sunset at the beach tonight was breathtaking. one of those moments where you stop and just appreciate being alive`,
+    ground_truth: "non_irony",
+    roberta_label: "non_irony",
+    roberta_confidence: 0.9101,
+    roberta_probs: { non_irony: 0.9101, irony: 0.0899 },
+  },
+  {
+    id: 9,
+    text: `my landlord raised the rent again. i'm so lucky to live in this city`,
+    ground_truth: "irony",
+    roberta_label: "non_irony",
+    roberta_confidence: 0.6312,
+    roberta_probs: { non_irony: 0.6312, irony: 0.3688 },
+  },
+  {
+    id: 10,
+    text: `baked sourdough from scratch for the first time and it actually came out perfectly. definitely doing this every weekend`,
+    ground_truth: "non_irony",
+    roberta_label: "non_irony",
+    roberta_confidence: 0.8934,
+    roberta_probs: { non_irony: 0.8934, irony: 0.1066 },
+  },
+  {
+    id: 11,
+    text: `my team just closed the biggest deal in company history. months of hard work and it finally paid off`,
+    ground_truth: "non_irony",
+    roberta_label: "non_irony",
+    roberta_confidence: 0.9187,
+    roberta_probs: { non_irony: 0.9187, irony: 0.0813 },
+  },
+  {
+    id: 12,
+    text: `love how the internet goes out the exact moment i start a two-hour video call with an overseas client. wonderful timing.`,
+    ground_truth: "irony",
+    roberta_label: "irony",
+    roberta_confidence: 0.8923,
+    roberta_probs: { non_irony: 0.1077, irony: 0.8923 },
+  },
+  {
+    id: 13,
+    text: `visited my hometown for the first time in 10 years. so many good memories. genuinely moved by how much has stayed the same`,
+    ground_truth: "non_irony",
+    roberta_label: "non_irony",
+    roberta_confidence: 0.8567,
+    roberta_probs: { non_irony: 0.8567, irony: 0.1433 },
+  },
+  {
+    id: 14,
+    text: `just waiting on a two-hour flight delay with no wifi and a dying phone. not how i planned to spend the afternoon`,
+    ground_truth: "non_irony",
+    roberta_label: "irony",
+    roberta_confidence: 0.5734,
+    roberta_probs: { non_irony: 0.4266, irony: 0.5734 },
+  },
+  {
+    id: 15,
+    text: `my commute is only 90 minutes each way. really not bad at all for what i'm being paid`,
+    ground_truth: "irony",
+    roberta_label: "non_irony",
+    roberta_confidence: 0.6123,
+    roberta_probs: { non_irony: 0.6123, irony: 0.3877 },
+  },
+  {
+    id: 16,
+    text: `rescued a stray cat last week and she has completely taken over the couch. wouldn't have it any other way`,
+    ground_truth: "non_irony",
+    roberta_label: "non_irony",
+    roberta_confidence: 0.9045,
+    roberta_probs: { non_irony: 0.9045, irony: 0.0955 },
+  },
+  {
+    id: 17,
+    text: `working late again this week — gotta love crunch time before launch`,
+    ground_truth: "non_irony",
+    roberta_label: "irony",
+    roberta_confidence: 0.5923,
+    roberta_probs: { non_irony: 0.4077, irony: 0.5923 },
+  },
+  {
+    id: 18,
+    text: `oh how fun — a flat tire in the rain with no spare. this day just keeps getting better and better`,
+    ground_truth: "irony",
+    roberta_label: "irony",
+    roberta_confidence: 0.9345,
+    roberta_probs: { non_irony: 0.0655, irony: 0.9345 },
+  },
+  {
+    id: 19,
+    text: `my garden finally produced enough tomatoes to make sauce from scratch. so satisfying to eat something you grew yourself`,
+    ground_truth: "non_irony",
+    roberta_label: "non_irony",
+    roberta_confidence: 0.9178,
+    roberta_probs: { non_irony: 0.9178, irony: 0.0822 },
+  },
+];
+
+export const CLASS_BALANCE = { irony: 8, non_irony: 12 };

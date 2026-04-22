@@ -5,12 +5,14 @@ const EmbeddingDemo = lazy(() => import("./EmbeddingDemo.jsx"));
 const TokenSamplingDemo = lazy(() => import("./TokenSamplingDemo.jsx"));
 const TokenizerDemo = lazy(() => import("./TokenizerDemo.jsx"));
 const AnalogyDemo = lazy(() => import("./AnalogyDemo.jsx"));
+const IronyAssignmentDemo = lazy(() => import("./IronyAssignmentDemo.jsx"));
 
 const TABS = [
   { id: "tokenizer", label: "Tokenizer" },
   { id: "embeddings", label: "Sentence Embeddings" },
   { id: "token-sampling", label: "Token Sampling" },
   { id: "analogies", label: "Word Analogies" },
+  { id: "irony", label: "Irony Assignment" },
 ];
 
 export default function App() {
@@ -33,6 +35,7 @@ export default function App() {
         {activeTab === "token-sampling" && <TokenSamplingDemo />}
         {activeTab === "tokenizer" && <TokenizerDemo />}
         {activeTab === "analogies" && <AnalogyDemo />}
+        {activeTab === "irony" && <IronyAssignmentDemo />}
       </Suspense>
     </div>
   );
