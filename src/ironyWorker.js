@@ -24,62 +24,24 @@ function parseLabel(raw) {
 }
 
 /**
- * Greedy decode up to maxNewTokens from the current model state.
- * Falls back to manual argmax loop if model.generate() is unavailable.
+ * Greedy decode up to maxNewTokens from the given tokenizer inputs.
+ * Uses model.generate() with the Transformers.js v3 single-object API.
  */
 async function greedyDecode(inputs, maxNewTokens) {
-  // Try model.generate() first (Transformers.js v3 supports it on CausalLM)
-  try {
-    const output = await model.generate(inputs, {
-      max_new_tokens: maxNewTokens,
-      do_sample: false,
-    });
-    const promptLen = inputs.input_ids.dims[1];
-    // output is a 2D tensor [1, total_len]; slice off the prompt tokens.
-    // data may be BigInt64Array (int64) — convert each element to Number for decode().
-    const newTokenIds = [];
-    for (let i = promptLen; i < output.dims[1]; i++) {
-      newTokenIds.push(Number(output.data[i]));
-    }
-    return tokenizer.decode(newTokenIds, { skip_special_tokens: true });
-  } catch (_) {
-    // Fallback: manual greedy loop using one-step forward passes
-    return await greedyDecodeManual(inputs, maxNewTokens);
+  // Transformers.js v3: generate() takes a single destructured options object.
+  // Spread the tokenizer output (input_ids, attention_mask) alongside gen params.
+  const output = await model.generate({
+    ...inputs,
+    max_new_tokens: maxNewTokens,
+    do_sample: false,
+  });
+  // output is a 2D int64 tensor [1, total_len] containing prompt + generated tokens.
+  const promptLen = inputs.input_ids.dims[1];
+  const newTokenIds = [];
+  for (let i = promptLen; i < output.dims[1]; i++) {
+    newTokenIds.push(Number(output.data[i]));
   }
-}
-
-async function greedyDecodeManual(inputs, maxNewTokens) {
-  const { Tensor } = await import("@huggingface/transformers");
-  // Convert input IDs to plain Numbers (data may be BigInt64Array)
-  let inputIds = Array.from(inputs.input_ids.data, (v) => Number(v));
-  const generated = [];
-  const eosId = tokenizer.eos_token_id;
-
-  for (let step = 0; step < maxNewTokens; step++) {
-    const seqLen = inputIds.length;
-    // Build int64 tensors using BigInt arrays, as ONNX Runtime expects
-    const currentInputs = {
-      input_ids: new Tensor("int64", BigInt64Array.from(inputIds, BigInt), [1, seqLen]),
-      attention_mask: new Tensor("int64", new BigInt64Array(seqLen).fill(1n), [1, seqLen]),
-    };
-    const { logits } = await model(currentInputs);
-    const vocabSize = logits.dims[2];
-    // Argmax over last token's logit slice
-    let bestId = 0;
-    let bestLogit = -Infinity;
-    const offset = (seqLen - 1) * vocabSize;
-    for (let v = 0; v < vocabSize; v++) {
-      if (logits.data[offset + v] > bestLogit) {
-        bestLogit = logits.data[offset + v];
-        bestId = v;
-      }
-    }
-    generated.push(bestId);
-    inputIds.push(bestId);
-    if (bestId === eosId) break;
-  }
-
-  return tokenizer.decode(generated, { skip_special_tokens: true });
+  return tokenizer.decode(newTokenIds, { skip_special_tokens: true });
 }
 
 self.addEventListener("message", async (e) => {

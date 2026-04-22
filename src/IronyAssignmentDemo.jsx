@@ -24,6 +24,33 @@ Label:`;
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const TOTAL = IRONY_DATASET.length;
 
+// Fisher-Yates shuffle returning a new array of indices
+function shuffleIndices(n) {
+  const arr = Array.from({ length: n }, (_, i) => i);
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const TWEET_ORDER_KEY = "irony-tweet-order";
+
+function getOrCreateTweetOrder() {
+  try {
+    const stored = localStorage.getItem(TWEET_ORDER_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length === IRONY_DATASET.length) {
+        return parsed;
+      }
+    }
+  } catch {}
+  const order = shuffleIndices(IRONY_DATASET.length);
+  localStorage.setItem(TWEET_ORDER_KEY, JSON.stringify(order));
+  return order;
+}
+
 function pct(n, total) {
   if (total === 0) return "—";
   return (100 * n / total).toFixed(1) + "%";
@@ -211,6 +238,8 @@ export default function IronyAssignmentDemo() {
   const [progressItems, setProgressItems] = useState([]);
   const [expandedTweet, setExpandedTweet] = useState(null);
 
+  const [tweetOrder] = useState(() => getOrCreateTweetOrder());
+
   const workerRef = useRef(null);
 
   // Count labeled tweets
@@ -335,15 +364,18 @@ export default function IronyAssignmentDemo() {
         </div>
 
         <div className="irony-tweet-list">
-          {IRONY_DATASET.map((item) => (
-            <TweetCard
-              key={item.id}
-              item={item}
-              label={humanLabels[item.id]}
-              onLabel={handleLabel}
-              disabled={!isLabelStage}
-            />
-          ))}
+          {tweetOrder.map((dataIdx) => {
+            const item = IRONY_DATASET[dataIdx];
+            return (
+              <TweetCard
+                key={item.id}
+                item={item}
+                label={humanLabels[item.id]}
+                onLabel={handleLabel}
+                disabled={!isLabelStage}
+              />
+            );
+          })}
         </div>
 
         {isLabelStage ? (
@@ -382,7 +414,7 @@ export default function IronyAssignmentDemo() {
             rows={12}
             value={customPrompt}
             onChange={(e) => setCustomPrompt(e.target.value)}
-            disabled={showStage3}
+            disabled={stage === "run_llm"}
             spellCheck={false}
           />
           <p className="explainer irony-placeholder-hint">
@@ -398,8 +430,23 @@ export default function IronyAssignmentDemo() {
             >
               Run LLM on all {TOTAL} tweets →
             </button>
+          ) : stage === "reveal" ? (
+            <button
+              className="secondary-btn"
+              onClick={() => {
+                setLlmLabels(null);
+                setLlmProgress({ current: 0, total: TOTAL });
+                setCurrentTweetIdx(0);
+                setModelReady(null);
+                setProgressItems([]);
+                setLlmError(null);
+                setStage("write_prompt");
+              }}
+            >
+              Try a different prompt
+            </button>
           ) : (
-            <span className="irony-submitted-pill">✓ Submitted</span>
+            <span className="irony-submitted-pill">Running…</span>
           )}
         </section>
       )}
@@ -481,10 +528,10 @@ export default function IronyAssignmentDemo() {
                 <tr>
                   <th>#</th>
                   <th>Tweet</th>
+                  <th>Ground truth</th>
                   <th>You</th>
                   <th>LLM</th>
                   <th>RoBERTa</th>
-                  <th>Ground truth</th>
                 </tr>
               </thead>
               <tbody>
@@ -503,6 +550,9 @@ export default function IronyAssignmentDemo() {
                       >
                         {item.text}
                       </td>
+                      <td className="irony-col-label irony-col-truth">
+                        {labelDisplay(truth)}
+                      </td>
                       <td className={`irony-col-label ${labelCellClass(human, truth)}`}>
                         {labelDisplay(human)}
                       </td>
@@ -511,9 +561,6 @@ export default function IronyAssignmentDemo() {
                       </td>
                       <td className={`irony-col-label ${labelCellClass(rob, truth)}`}>
                         {labelDisplay(rob)}
-                      </td>
-                      <td className="irony-col-label irony-col-truth">
-                        {labelDisplay(truth)}
                       </td>
                     </tr>
                   );
