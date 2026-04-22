@@ -10,9 +10,9 @@ const IronyAssignmentDemo = lazy(() => import("./IronyAssignmentDemo.jsx"));
 const TABS = [
   { id: "tokenizer", label: "Tokenizer" },
   { id: "embeddings", label: "Sentence Embeddings" },
-  { id: "token-sampling", label: "Token Sampling" },
   { id: "analogies", label: "Word Analogies" },
-  { id: "irony", label: "Irony Assignment" },
+  { id: "token-sampling", label: "Token Sampling" },
+  { id: "irony", label: "Assignment: Irony Detection" },
 ];
 
 export default function App() {
