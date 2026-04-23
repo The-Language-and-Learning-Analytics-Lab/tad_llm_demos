@@ -1,4 +1,4 @@
-# TAD LLM Demos
+# Text as Data LLM Demos
 
 A collection of interactive, browser-based demos for teaching how large language models work. All model inference runs locally in the browser via Web Workers — no server, no API keys.
 
