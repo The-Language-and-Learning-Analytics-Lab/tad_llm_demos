@@ -134,6 +134,9 @@ export default function TokenSamplingDemo() {
   const [sampledIndex, setSampledIndex] = useState(null);
   const [sampledToken, setSampledToken] = useState(null);
   const [generatedTokens, setGeneratedTokens] = useState([]);
+  // pendingToken: sampled for the current round but not yet committed to generatedTokens.
+  // Committed only when the user clicks "Next token distribution" again.
+  const [pendingToken, setPendingToken] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -193,8 +196,18 @@ export default function TokenSamplingDemo() {
   }, [probTokens, topP]);
 
   const fetchDistribution = () => {
-    const effectivePrompt = prompt + generatedTokens.join("");
+    // Commit the pending token (if any) before fetching a new distribution.
+    // This is what actually advances the generated word count.
+    const committed =
+      pendingToken !== null ? [...generatedTokens, pendingToken] : generatedTokens;
+    const effectivePrompt = prompt + committed.join("");
     if (!effectivePrompt.trim()) return;
+
+    if (pendingToken !== null) {
+      setGeneratedTokens(committed);
+      setPendingToken(null);
+    }
+
     setLoading(true);
     setError(null);
     setRawTokens(null);
@@ -206,6 +219,7 @@ export default function TokenSamplingDemo() {
 
   const clearGenerated = () => {
     setGeneratedTokens([]);
+    setPendingToken(null);
     setSampledIndex(null);
     setSampledToken(null);
     setRawTokens(null);
@@ -227,10 +241,11 @@ export default function TokenSamplingDemo() {
     }
     setSampledIndex(idx);
     setSampledToken(nucleus[idx].token);
-    setGeneratedTokens((prev) => [...prev, nucleus[idx].token]);
+    // Replace (not append) the pending token — multiple Sample clicks stay on the same slot.
+    setPendingToken(nucleus[idx].token);
   };
 
-  const hasGenerated = generatedTokens.length > 0;
+  const hasGenerated = generatedTokens.length > 0 || pendingToken !== null;
 
   return (
     <>
@@ -255,6 +270,7 @@ export default function TokenSamplingDemo() {
           onChange={(e) => {
             setPrompt(e.target.value);
             setGeneratedTokens([]);
+            setPendingToken(null);
             setSampledIndex(null);
             setSampledToken(null);
             setRawTokens(null);
@@ -268,7 +284,18 @@ export default function TokenSamplingDemo() {
         {hasGenerated && (
           <div className="generated-continuation">
             <span className="generated-label">Generated:</span>
-            <span className="generated-text">{generatedTokens.join("")}</span>
+            <span className="generated-text">
+              {generatedTokens.map((tok, i) => (
+                <span key={i} className="generated-token">
+                  <span className="token-num">{i + 1}</span>{tok}
+                </span>
+              ))}
+              {pendingToken !== null && (
+                <span className="generated-token generated-token--pending">
+                  <span className="token-num">{generatedTokens.length + 1}</span>{pendingToken}
+                </span>
+              )}
+            </span>
           </div>
         )}
 

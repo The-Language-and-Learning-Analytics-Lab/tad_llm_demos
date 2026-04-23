@@ -464,6 +464,29 @@ textarea:focus {
   font-weight: 500;
 }
 
+.generated-token {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: bottom;
+}
+
+.token-num {
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: #9e9e99;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+/* Pending token: sampled but not yet committed — replaced on next "Next token distribution" */
+.generated-token--pending {
+  color: #D85A30;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+
 /* ── Sampled token display ── */
 
 .sampled-token-display {
